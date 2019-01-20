@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TweetScrapper", "TweetScrapper\TweetScrapper.csproj", "{EA65C037-F622-44AB-81FC-6FD6A234CB7E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TweetScrapperTest", "TestTweetScrapper\TweetScrapperTest.csproj", "{B50380A1-C580-4E42-8E07-B94646AD063F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EA65C037-F622-44AB-81FC-6FD6A234CB7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA65C037-F622-44AB-81FC-6FD6A234CB7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA65C037-F622-44AB-81FC-6FD6A234CB7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA65C037-F622-44AB-81FC-6FD6A234CB7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B50380A1-C580-4E42-8E07-B94646AD063F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B50380A1-C580-4E42-8E07-B94646AD063F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B50380A1-C580-4E42-8E07-B94646AD063F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B50380A1-C580-4E42-8E07-B94646AD063F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3086EF43-2918-4FB3-B04D-C6619F511C0E}
+	EndGlobalSection
+EndGlobal
