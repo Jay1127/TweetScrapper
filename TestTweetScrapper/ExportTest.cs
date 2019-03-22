@@ -21,17 +21,17 @@ namespace TweetScrapperTest
         {
             _tweets = new List<IScrapItem>()
             {
-                new Tweet(1,"1111111", DateTime.Now),
-                new Tweet(2,"2222222", DateTime.Now),
-                new Tweet(3,"3333333", DateTime.Now),
-                new Tweet(4,"4444444", DateTime.Now),
-                new Tweet(5,"5555555", DateTime.Now),
-                new Tweet(6,"6666666", DateTime.Now),
-                new Tweet(7,"7777777", DateTime.Now),
-                new Tweet(8,"8888888", DateTime.Now),
-                new Tweet(9,"9999999", DateTime.Now),
-                new Tweet(10,"10101010101010", DateTime.Now),
-                new Tweet(11,"11111111111111", DateTime.Now),
+                new Tweet(1,"1111111", DateTime.Now, "",0,0),
+                new Tweet(2,"2222222", DateTime.Now, "",0,0),
+                new Tweet(3,"3333333", DateTime.Now, "",0,0),
+                new Tweet(4,"4444444", DateTime.Now, "",0,0),
+                new Tweet(5,"5555555", DateTime.Now, "",0,0),
+                new Tweet(6,"6666666", DateTime.Now, "",0,0),
+                new Tweet(7,"7777777", DateTime.Now, "",0,0),
+                new Tweet(8,"8888888", DateTime.Now, "",0,0),
+                new Tweet(9,"9999999", DateTime.Now, "",0,0),
+                new Tweet(10,"10101010101010", DateTime.Now, "",0,0),
+                new Tweet(11,"11111111111111", DateTime.Now, "",0,0),
             };
         }
 
@@ -65,11 +65,6 @@ namespace TweetScrapperTest
             new ExcelExporter(header).Export(outputPath, _tweets);
 
             Assert.IsTrue(true);
-        }
-
-        [TestMethod]
-        public void Export()
-        {
         }
     }
 }

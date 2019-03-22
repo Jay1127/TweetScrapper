@@ -61,6 +61,7 @@
     <Compile Include="ExportTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerachQueryTest.cs" />
+    <Compile Include="UserTimelineQueryTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

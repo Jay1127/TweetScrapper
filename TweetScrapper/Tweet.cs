@@ -16,6 +16,10 @@ namespace TweetScrapper
         /// </summary>
         public ulong Id { get; }
 
+        public int FavoriteCount { get; }
+
+        public int RetweetCount { get; }
+
         /// <summary>
         /// Tweet의 내용
         /// </summary>
@@ -27,16 +31,32 @@ namespace TweetScrapper
         public DateTime CreationTime { get; }
 
         /// <summary>
+        /// URL(short)
+        /// </summary>
+        public string Url { get; }
+
+        /// <summary>
+        /// 기본 생성자
+        /// </summary>
+        public Tweet()
+        {
+
+        }
+
+        /// <summary>
         /// 생성자
         /// </summary>
         /// <param name="id">Tweet의 Id</param>
         /// <param name="text">Tweet의 내용</param>
         /// <param name="creationTime">Tweet 생성시간</param>
-        public Tweet(ulong id, string text, DateTime creationTime)
+        public Tweet(ulong id, string text, DateTime creationTime, string url, int favoriteCount, int retweetCount)
         {
             Id = id;
             Text = text;
             CreationTime = creationTime;
+            Url = url;
+            FavoriteCount = favoriteCount;
+            RetweetCount = retweetCount;
         }
 
         /// <summary>

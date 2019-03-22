@@ -40,7 +40,7 @@ namespace TweetScrapperTest
         {            
             var queryInfo = new TweetSearchQuery("나이키");
 
-            var scrapper = new TweetScrapper.TweetScrapper(_token);
+            var scrapper = new TweetScrapper.TweetKeywordScrapper(_token);
             var tweets = scrapper.Scrap(queryInfo);
 
             // 최대 갯수 (MaxScrapTweetCount - 1) + TweetCountPerPage
@@ -50,8 +50,8 @@ namespace TweetScrapperTest
         [TestMethod]
         public void Test100Query()
         {
-            TweetSearchQuery queryInfo = new TweetSearchQuery("나이키", maxTweetCount: 100);
-            var scrapper = new TweetScrapper.TweetScrapper(_token);
+            TweetSearchQuery queryInfo = new TweetSearchQuery("나이키", maxTweetCount: 2000);
+            var scrapper = new TweetScrapper.TweetKeywordScrapper(_token);
             var tweets = scrapper.Scrap(queryInfo);
 
             Assert.IsTrue(tweets.Count() <= (queryInfo.MaxTweetCount - 1) + queryInfo.TweetCountPerPage);

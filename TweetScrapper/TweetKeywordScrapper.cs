@@ -12,7 +12,7 @@ namespace TweetScrapper
     /// <summary>
     /// Tweet를 쿼리를 통해 가져옴.
     /// </summary>
-    public class TweetScrapper : IScrapper<TweetSearchQuery, Tweet>
+    public class TweetKeywordScrapper : IScrapper<TweetSearchQuery, Tweet>
     {
         /// <summary>
         /// 인증 토큰
@@ -23,7 +23,7 @@ namespace TweetScrapper
         /// 생성자
         /// </summary>
         /// <param name="token">인증 토큰</param>
-        public TweetScrapper(Token token)
+        public TweetKeywordScrapper(Token token)
         {
             _token = token;
         }
@@ -58,7 +58,9 @@ namespace TweetScrapper
         /// <returns>한페이지의 Tweet</returns>
         public IEnumerable<Tweet> ScrapPerPage(TweetSearchQuery queryInfo)
         {
-            return ParseJsonToTweet(ReceviceTweetData(queryInfo));
+            JObject o = JObject.Parse(ReceviceTweetData(queryInfo));
+            return TweetParser.Parse(o["statuses"] as JArray);
+            //return ParseJsonToTweet(ReceviceTweetData(queryInfo));
         }
 
         /// <summary>
@@ -81,19 +83,19 @@ namespace TweetScrapper
             }
         }
 
-        /// <summary>
-        /// tweet api에서 받은 데이터를 파싱함.
-        /// </summary>
-        /// <param name="jsonString">트위터 api에서 받은 json 데이터</param>
-        /// <returns>tweet</returns>
-        private IEnumerable<Tweet> ParseJsonToTweet(string jsonString)
-        {
-            JObject o = JObject.Parse(jsonString);
-            return o["statuses"].Select(jToken => new Tweet(jToken["id"].Value<ulong>(), 
-                                                            jToken["text"].Value<string>(),
-                                                            ParseTweetDateToDateTime(jToken["created_at"].Value<string>())));
+        ///// <summary>
+        ///// tweet api에서 받은 데이터를 파싱함.
+        ///// </summary>
+        ///// <param name="jsonString">트위터 api에서 받은 json 데이터</param>
+        ///// <returns>tweet</returns>
+        //private IEnumerable<Tweet> ParseJsonToTweet(string jsonString)
+        //{
+        //    JObject o = JObject.Parse(jsonString);
+        //    return o["statuses"].Select(jToken => new Tweet(jToken["id"].Value<ulong>(), 
+        //                                                    jToken["text"].Value<string>(),
+        //                                                    ParseTweetDateToDateTime(jToken["created_at"].Value<string>()), ""));
 
-        }
+        //}
 
         /// <summary>
         /// Tweet에서 받은 DateTime문자열을 .Net의 DateTime으로 파싱함.
