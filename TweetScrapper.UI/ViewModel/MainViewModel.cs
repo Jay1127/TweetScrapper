@@ -1,34 +1,48 @@
+using System;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 
 namespace TweetScrapper.UI.ViewModel
 {
-    /// <summary>
-    /// This class contains properties that the main View can data bind to.
-    /// <para>
-    /// Use the <strong>mvvminpc</strong> snippet to add bindable properties to this ViewModel.
-    /// </para>
-    /// <para>
-    /// You can also use Blend to data bind with the tool's support.
-    /// </para>
-    /// <para>
-    /// See http://www.galasoft.ch/mvvm
-    /// </para>
-    /// </summary>
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : ViewModelBase, IRequestCloseViewModel
     {
-        /// <summary>
-        /// Initializes a new instance of the MainViewModel class.
-        /// </summary>
+        public TokenAccessViewModel TokenAccessViewModel { get; }
+        public TweetSearchViewModel TweetSearchViewModel { get; }
+
+        public event EventHandler RequestClose;
+
+        public RelayCommand ShowAccessDialogCommand { get; }
+
+        public RelayCommand SaveCommand { get; }
+        public RelayCommand ExitCommand { get; }        
+
         public MainViewModel()
         {
-            ////if (IsInDesignMode)
-            ////{
-            ////    // Code runs in Blend --> create design time data.
-            ////}
-            ////else
-            ////{
-            ////    // Code runs "for real"
-            ////}
+            ShowAccessDialogCommand = new RelayCommand(ShowAccessDialog);
+            ExitCommand = new RelayCommand(Exit);
+            TokenAccessViewModel = new ViewModelLocator().TokenAccess;
+            TweetSearchViewModel = new ViewModelLocator().TweetSearch;
+        }
+
+        public void ShowAccessDialog()
+        {
+            new TokenAccessView().ShowDialog();
+
+            if (TokenAccessViewModel.IsAccessed)
+            {
+                TweetSearchViewModel.CanSearch = true;
+                TweetSearchViewModel.SearchKeyword = string.Empty;
+            }
+            else
+            {
+                TweetSearchViewModel.CanSearch = false;
+                TweetSearchViewModel.InitSearchKeyword();
+            }
+        }
+
+        public void Exit()
+        {
+            RequestClose?.Invoke(this, EventArgs.Empty);
         }
     }
 }

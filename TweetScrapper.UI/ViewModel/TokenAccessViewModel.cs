@@ -8,26 +8,69 @@ using System.Threading.Tasks;
 
 namespace TweetScrapper.UI.ViewModel
 {
-    public class TokenAccessViewModel : ViewModelBase//, IRequestCloseViewModel
+    /// <summary>
+    /// Token access view's datacontext
+    /// </summary>
+    public class TokenAccessViewModel : ViewModelBase, IRequestCloseViewModel
     {
-        //public Token Token { get; set; }
-        //public string ConsumerKey { get; set; }
-        //public string ConsumerSecret { get; set; }
+        /// <summary>
+        /// Tweet access token
+        /// </summary>
+        public Token Token { get; set; }
 
-        //public RelayCommand AccessCommand { get; set; }
+        /// <summary>
+        /// consumer key(binding textbox)
+        /// </summary>
+        public string ConsumerKey { get; set; }
 
-        //public event EventHandler RequestClose;
+        /// <summary>
+        /// consumer secret(binding textbox)
+        /// </summary>
+        public string ConsumerSecret { get; set; }
 
-        //public TokenAccessViewModel()
-        //{
-        //    AccessCommand = new RelayCommand(AccessToken);
-        //}
+        /// <summary>
+        /// Authorize oauth token(binding button)
+        /// </summary>
+        public RelayCommand AccessCommand { get; set; }
 
-        //private void AccessToken()
-        //{
-        //    Token = Authorizer.Authorize(ConsumerKey, ConsumerSecret);
+        /// <summary>
+        /// if authorize token, return true
+        /// </summary>
+        public bool IsAccessed { get; set; }
 
-        //    RequestClose?.Invoke(this, EventArgs.Empty);
-        //}
+        /// <summary>
+        /// request close event(after click button, raise event)
+        /// </summary>
+        public event EventHandler RequestClose;
+
+        /// <summary>
+        /// constructor
+        /// </summary>
+        public TokenAccessViewModel()
+        {
+            AccessCommand = new RelayCommand(AccessToken);
+            ConsumerKey = "egjNlASi3o3r4nriynMAnlTjE";
+            ConsumerSecret = "fhuBNzdwrs1Tt9NrkzCvYJbzQeCr5WvIGvHPOG95lod9SVJ7Qd";
+        }
+
+        /// <summary>
+        /// AccessToken command's action
+        /// </summary>
+        private void AccessToken()
+        {
+            try
+            {
+                Token = Authorizer.Authorize(ConsumerKey, ConsumerSecret);
+                IsAccessed = true;
+            }
+            catch(Exception e)
+            {
+                IsAccessed = false;
+            }
+            finally
+            {
+                RequestClose?.Invoke(this, EventArgs.Empty);
+            }
+        }
     }
 }

@@ -70,12 +70,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="EnumBindingSourceExtension.cs" />
     <Compile Include="TokenAccessView.xaml.cs">
       <DependentUpon>TokenAccessView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\IRequestCloseViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\TokenAccessViewModel.cs" />
+    <Compile Include="ViewModel\TweetSearchViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -5,22 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TweetScrapper.UI"
         mc:Ignorable="d"
-        Title="TokenAccessView" Height="176" Width="433">
+        Title="TokenAccessView" ResizeMode="NoResize" Height="211.37" Width="558.6" DataContext="{Binding TokenAccess, Source={StaticResource Locator}}">
     <Grid>
         <Grid.Resources>
             <Style TargetType="Label">
                 <Setter Property="HorizontalAlignment" Value="Left"/>
                 <Setter Property="VerticalAlignment" Value="Top"/>
+                <Setter Property="Width" Value="105"/>
+                <Setter Property="Height" Value="30"/>
             </Style>
-            <Style TargetType="Button">
+            <Style TargetType="TextBox">
                 <Setter Property="HorizontalAlignment" Value="Left"/>
                 <Setter Property="VerticalAlignment" Value="Top"/>
+                <Setter Property="Height" Value="30"/>
+                <Setter Property="Width" Value="370"/>
             </Style>
         </Grid.Resources>
-        <Label Content="Consumer Key" Width="100" Height="30" Margin="29,30,296,85"/>
-        <Label Content="Access Key" Width="100" Height="30" Margin="29,82,296,33"/>
-        <TextBox Text="{Binding ConsumerKey}" Width="100" Height="30" Margin="151,29,174,86"/>
-        <TextBox Text="{Binding ConsumerSceret}" Width="100" Height="30" Margin="151,82,174,33"/>
-        <Button Command="{Binding AccessCommand}" Content="Access" Margin="287,82,0,0" Height="30" Width="99"/>
+        <Label Content="Consumer Key" Margin="33,34,0,0"/>
+        <Label Content="Consumer Secret" Margin="33,87,0,0"/>
+        <TextBox Text="{Binding ConsumerKey}" Margin="144,34,0,0" />
+        <TextBox Text="{Binding ConsumerSecret}" Margin="144,87,0,0" />
+        <Button Command="{Binding AccessCommand}" Content="Access" Margin="416,125,0,0" Height="30" Width="99"/>
     </Grid>
 </Window>

@@ -4,9 +4,33 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TweetScrapper.UI"
+        xmlns:vm="clr-namespace:TweetScrapper.UI.ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" DataContext="{Binding Main, Source={StaticResource Locator}}">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <DataGrid Grid.Row="2">
+
+        </DataGrid>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" DataContext="{Binding TweetSearch, Source={StaticResource Locator}}">
+            <ComboBox ItemsSource="{Binding Source={local:EnumBindingSource {x:Type vm:SearchType}}}" SelectedItem="{Binding SearchType}"
+                      SelectedIndex="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="99" Height="24" Grid.Row="1"/>
+            <TextBox Text="{Binding SearchKeyword}" IsEnabled="{Binding CanSearch}" 
+                     HorizontalAlignment="Center" VerticalAlignment="Center" Width="443" Height="24" Grid.Row="1" TextWrapping="Wrap" />
+            <Button Command="{Binding SearchCommand}" IsEnabled="{Binding CanSearch}" Content="Search" HorizontalAlignment="Center" VerticalAlignment="Center" Width="66" Height="24" Grid.Row="1"/>
+        </StackPanel>
+        <Menu>
+            <MenuItem Header="File">
+                <MenuItem Header="Save" Command="{Binding SaveCommand}"/>
+                <MenuItem Header="Exit" Command="{Binding ExitCommand}"/>
+            </MenuItem>
+            <MenuItem Header="Settings">
+                <MenuItem Header="Access" Command="{Binding ShowAccessDialogCommand}"/>
+            </MenuItem>
+        </Menu>
     </Grid>
 </Window>
