@@ -41,10 +41,7 @@ namespace TweetScrapper.UI.ViewModel
             ////    // Create run time view services and models
             ////    SimpleIoc.Default.Register<IDataService, DataService>();
             ////}
-
             SimpleIoc.Default.Register<MainViewModel>();
-            SimpleIoc.Default.Register<TokenAccessViewModel>();
-            SimpleIoc.Default.Register<TweetSearchViewModel>();
         }
 
         public MainViewModel Main
@@ -54,23 +51,6 @@ namespace TweetScrapper.UI.ViewModel
                 return ServiceLocator.Current.GetInstance<MainViewModel>();
             }
         }
-        
-        public TokenAccessViewModel TokenAccess
-        {
-            get
-            {
-                return ServiceLocator.Current.GetInstance<TokenAccessViewModel>();
-            }
-        }
-
-        public TweetSearchViewModel TweetSearch
-        {
-            get
-            {
-                return ServiceLocator.Current.GetInstance<TweetSearchViewModel>();
-            }
-        }
-
 
         public static void Cleanup()
         {

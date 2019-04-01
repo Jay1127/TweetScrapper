@@ -71,14 +71,24 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="EnumBindingSourceExtension.cs" />
+    <Compile Include="Model\TweetSearcher.cs" />
     <Compile Include="TokenAccessView.xaml.cs">
       <DependentUpon>TokenAccessView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\TweetRepository.cs" />
+    <Compile Include="ViewModel\AdvancedKeywordSearchViewModel.cs" />
+    <Compile Include="ViewModel\AdvancedTimelineSearchViewModel.cs" />
     <Compile Include="ViewModel\IRequestCloseViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\TokenAccessViewModel.cs" />
     <Compile Include="ViewModel\TweetSearchViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="View\AdvancedKeywordView.xaml.cs">
+      <DependentUpon>AdvancedKeywordView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\AdvancedUserTimelineView.xaml.cs">
+      <DependentUpon>AdvancedUserTimelineView.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -92,6 +102,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="TokenAccessView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AdvancedKeywordView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AdvancedUserTimelineView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -129,5 +147,6 @@
       <Name>TweetScrapper</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

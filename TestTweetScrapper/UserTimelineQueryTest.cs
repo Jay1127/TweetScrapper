@@ -29,8 +29,8 @@ namespace TweetScrapperTest
                 ScreenName = "twitterapi"
             };
 
-            var scrapper = new TweetScrapper.TimelineScrapper(_token);
-            var tweets = scrapper.Scrap(queryInfo);
+            var scrapper = new Scrapper(_token, queryInfo);
+            var tweets = scrapper.Scrap();
 
             // 최대 갯수 (MaxScrapTweetCount - 1) + TweetCountPerPage
             //Assert.IsTrue(tweets.Count() <= (queryInfo.MaxTweetCount - 1) + queryInfo.TweetCountPerPage);

@@ -12,15 +12,17 @@ namespace TweetScrapper
         /// <summary>
         /// 기본 url
         /// </summary>
-        private readonly string _baseUrl = " https://api.twitter.com/1.1/statuses/user_timeline.json?";
+        public string BaseUrl { get; } = " https://api.twitter.com/1.1/statuses/user_timeline.json?";
 
         public string UserId { get; set; }
 
         public string ScreenName { get; set; }
 
-        public int TweetCountPerQuery { get; set; } = 200;
+        public int CountPerQuery { get; set; } = 200;
 
         public int MaxCount { get; set; }
+
+        public ulong MaxId { get; set; }
 
         public bool IsExtrudeReplies { get; set; }
 
@@ -28,7 +30,7 @@ namespace TweetScrapper
        
         public string BuildQueryUrl()
         {
-            string query = _baseUrl;
+            string query = BaseUrl;
 
             bool hasUserId = !string.IsNullOrEmpty(UserId);
             bool hasScreenName = !string.IsNullOrEmpty(ScreenName);
@@ -53,7 +55,7 @@ namespace TweetScrapper
             }
 
             return $"{query}" +
-                   $"count={TweetCountPerQuery}";
+                   $"count={CountPerQuery}";
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
+using System.Windows.Documents;
 using TweetScrapper.UI.ViewModel;
 
 namespace TweetScrapper.UI
@@ -16,6 +18,11 @@ namespace TweetScrapper.UI
             {
                 this.Close();
             };
+        }
+
+        private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
+        {
+            System.Diagnostics.Process.Start(e.Uri.ToString());
         }
     }
 }

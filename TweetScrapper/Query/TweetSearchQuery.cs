@@ -33,9 +33,9 @@ namespace TweetScrapper
     public class TweetSearchQuery : IQueryable
     {
         /// <summary>
-        /// 기본 url
+        /// Base query url
         /// </summary>
-        private readonly string _baseUrl = "https://api.twitter.com/1.1/search/tweets.json?";
+        public string BaseUrl { get; } = "https://api.twitter.com/1.1/search/tweets.json?";
 
         /// <summary>
         /// 검색 키워드
@@ -55,22 +55,28 @@ namespace TweetScrapper
         /// <summary>
         /// 페이지당 가져올 Tweet의 수로 기본 15, 최대 100
         /// </summary>
-        public int TweetCountPerPage { get; private set; }
+        public int CountPerQuery { get; private set; }
 
         /// <summary>
         /// 최대로 가져올 트위터의 수
         /// </summary>
-        public int MaxTweetCount { get; set; }
+        public int MaxCount { get; set; }
+
+        /// <summary>
+        /// 해당 id보다 작거나 같은 tweet를 가져옴.
+        /// </summary>
+        public ulong MaxId { get; set; }
 
         /// <summary>
         /// 해당 날짜 이전에 생성된 Tweet을 가져옴.(최대 일주일만 가져올 수 있음.)
         /// </summary>
         public DateTime UntilDate { get; set; }
 
-        /// <summary>
-        /// 해당 id보다 작거나 같은 tweet를 가져옴.
-        /// </summary>
-        public ulong MaxId { get; set; }
+        public TweetSearchQuery()
+            : this(string.Empty)
+        {
+
+        }
 
         /// <summary>
         /// 생성자
@@ -87,8 +93,8 @@ namespace TweetScrapper
             Keyword = keyword;
             Language = language;
             SearchOption = scrapOption;
-            MaxTweetCount = maxTweetCount;
-            TweetCountPerPage = MaxTweetCount < 100 ? MaxTweetCount : 100;
+            MaxCount = maxTweetCount;
+            CountPerQuery = MaxCount < 100 ? MaxCount : 100;
             MaxId = ulong.MaxValue;
         }
 
@@ -98,18 +104,11 @@ namespace TweetScrapper
         /// <returns>쿼리 URL</returns>
         public string BuildQueryUrl()
         {
-            return $"{_baseUrl}" +
+            return $"{BaseUrl}" +
                    $"q={Keyword}&" +
                    $"lang={Language}&" +
-                   $"count={TweetCountPerPage}&" +
+                   $"count={CountPerQuery}&" +
                    $"max_id={MaxId}";
         }
-
-        /*
-        private string ConvertUntilDate()
-        {
-            return UntilDate.ToShortDateString();
-        }
-        */
     }
 }

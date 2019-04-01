@@ -40,21 +40,22 @@ namespace TweetScrapperTest
         {            
             var queryInfo = new TweetSearchQuery("나이키");
 
-            var scrapper = new TweetScrapper.TweetKeywordScrapper(_token);
-            var tweets = scrapper.Scrap(queryInfo);
+            
+            var scrapper = new Scrapper(_token, queryInfo);
+            var tweets = scrapper.Scrap();
 
             // 최대 갯수 (MaxScrapTweetCount - 1) + TweetCountPerPage
-            Assert.IsTrue(tweets.Count() <= (queryInfo.MaxTweetCount - 1) + queryInfo.TweetCountPerPage);
+            Assert.IsTrue(tweets.Count() <= (queryInfo.MaxCount - 1) + queryInfo.CountPerQuery);
         }
 
         [TestMethod]
         public void Test100Query()
         {
             TweetSearchQuery queryInfo = new TweetSearchQuery("나이키", maxTweetCount: 2000);
-            var scrapper = new TweetScrapper.TweetKeywordScrapper(_token);
-            var tweets = scrapper.Scrap(queryInfo);
+            var scrapper = new Scrapper(_token, queryInfo);
+            var tweets = scrapper.Scrap();
 
-            Assert.IsTrue(tweets.Count() <= (queryInfo.MaxTweetCount - 1) + queryInfo.TweetCountPerPage);
+            Assert.IsTrue(tweets.Count() <= (queryInfo.MaxCount - 1) + queryInfo.CountPerQuery);
         }
     }
 }

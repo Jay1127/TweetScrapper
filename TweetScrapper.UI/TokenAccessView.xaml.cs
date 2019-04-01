@@ -12,10 +12,10 @@ namespace TweetScrapper.UI
         {
             InitializeComponent();
 
-            (this.DataContext as IRequestCloseViewModel).RequestClose += (sender, e) =>
-            {
-                this.Close();
-            };
+            //(this.DataContext as IRequestCloseViewModel).RequestClose += (sender, e) =>
+            //{
+            //    this.Close();
+            //};            
         }
     }
 }

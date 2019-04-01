@@ -6,23 +6,53 @@
         xmlns:local="clr-namespace:TweetScrapper.UI"
         xmlns:vm="clr-namespace:TweetScrapper.UI.ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" DataContext="{Binding Main, Source={StaticResource Locator}}">
+        Title="MainWindow" Height="537.209" Width="1070.349" DataContext="{Binding Main, Source={StaticResource Locator}}">
     <Grid>
+        <Grid.Resources>
+            <DataTemplate DataType="{x:Type vm:AdvancedKeywordSearchViewModel}">
+                <local:AdvancedKeywordView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:AdvancedTimelineSearchViewModel}">
+                <local:AdvancedUserTimelineView/>
+            </DataTemplate>            
+        </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
             <RowDefinition Height="40"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <DataGrid Grid.Row="2">
-
+        <DataGrid DataContext="{Binding TweetSearchViewModel}" ItemsSource="{Binding Tweets}"
+                  Grid.Row="2" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Text}" Header="Text" Width="2*" IsReadOnly="True"/>
+                <DataGridTemplateColumn Header="URL" Width="0.6*" IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                            <Hyperlink NavigateUri="{Binding Url}" RequestNavigate="Hyperlink_RequestNavigate">
+                                 <TextBlock Text="{Binding Url}"/>
+                            </Hyperlink>
+                            </TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Binding="{Binding CreationTime}" Header="CreationTime" Width="0.5*" IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding FavoriteCount}" Header="FavoriteCount" Width="0.4*" IsReadOnly="True"/>
+            </DataGrid.Columns>
         </DataGrid>
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" DataContext="{Binding TweetSearch, Source={StaticResource Locator}}">
-            <ComboBox ItemsSource="{Binding Source={local:EnumBindingSource {x:Type vm:SearchType}}}" SelectedItem="{Binding SearchType}"
+        <StackPanel DataContext="{Binding TweetSearchViewModel}"
+                    Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+            <ComboBox ItemsSource="{Binding Source={local:EnumBindingSource {x:Type local:SearchType}}}" SelectedItem="{Binding SearchType}"
                       SelectedIndex="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="99" Height="24" Grid.Row="1"/>
-            <TextBox Text="{Binding SearchKeyword}" IsEnabled="{Binding CanSearch}" 
-                     HorizontalAlignment="Center" VerticalAlignment="Center" Width="443" Height="24" Grid.Row="1" TextWrapping="Wrap" />
-            <Button Command="{Binding SearchCommand}" IsEnabled="{Binding CanSearch}" Content="Search" HorizontalAlignment="Center" VerticalAlignment="Center" Width="66" Height="24" Grid.Row="1"/>
+            <TextBox Text="{Binding SearchKeyword}" IsEnabled="{Binding TweetSearcher.CanSearch}" 
+                     HorizontalAlignment="Center" VerticalAlignment="Center" Width="443" Height="24" Grid.Row="1" TextWrapping="Wrap"/>
+            <Button Command="{Binding SearchCommand}" IsEnabled="{Binding TweetSearcher.CanSearch}" 
+                    Content="Search" HorizontalAlignment="Center" VerticalAlignment="Center" Width="66" Height="24" Grid.Row="1"/>
+            <Button Command="{Binding ShowAdvancedOptionCommand}" IsEnabled="{Binding TweetSearcher.CanSearch}" 
+                Content="Advanced" HorizontalAlignment="Center" VerticalAlignment="Center" Width="66" Height="24"/>
         </StackPanel>
+        <Label Content="Count : " Height="24" HorizontalAlignment="Center" Margin="879,7,129,9" Grid.Row="1"/>
+        <Label Content="{Binding TweetSearchViewModel.Count}" Height="24" HorizontalAlignment="Center" Margin="928,7,72,9" Grid.Row="1" Width="62"/>
         <Menu>
             <MenuItem Header="File">
                 <MenuItem Header="Save" Command="{Binding SaveCommand}"/>
@@ -32,5 +62,6 @@
                 <MenuItem Header="Access" Command="{Binding ShowAccessDialogCommand}"/>
             </MenuItem>
         </Menu>
+        <ContentControl Content="{Binding AdvancedOptionViewModel}" Margin="804,31,10,229" Grid.Row="1" Grid.RowSpan="2"/>
     </Grid>
 </Window>

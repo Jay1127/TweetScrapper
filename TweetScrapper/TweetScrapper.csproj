@@ -116,10 +116,9 @@
     <Compile Include="IScrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Exporter\TextExporter.cs" />
-    <Compile Include="TimelineScrapper.cs" />
+    <Compile Include="Scrapper.cs" />
     <Compile Include="Tweet.cs" />
     <Compile Include="TweetParser.cs" />
-    <Compile Include="TweetKeywordScrapper.cs" />
     <Compile Include="Query\UserTimelineQuery.cs" />
   </ItemGroup>
   <ItemGroup>

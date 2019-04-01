@@ -13,10 +13,7 @@ namespace TweetScrapper.UI.ViewModel
     /// </summary>
     public class TokenAccessViewModel : ViewModelBase, IRequestCloseViewModel
     {
-        /// <summary>
-        /// Tweet access token
-        /// </summary>
-        public Token Token { get; set; }
+        private readonly TweetSearcher _tweetSearcher;
 
         /// <summary>
         /// consumer key(binding textbox)
@@ -34,11 +31,6 @@ namespace TweetScrapper.UI.ViewModel
         public RelayCommand AccessCommand { get; set; }
 
         /// <summary>
-        /// if authorize token, return true
-        /// </summary>
-        public bool IsAccessed { get; set; }
-
-        /// <summary>
         /// request close event(after click button, raise event)
         /// </summary>
         public event EventHandler RequestClose;
@@ -46,8 +38,9 @@ namespace TweetScrapper.UI.ViewModel
         /// <summary>
         /// constructor
         /// </summary>
-        public TokenAccessViewModel()
+        public TokenAccessViewModel(TweetSearcher tweetSearcher)
         {
+            _tweetSearcher = tweetSearcher;
             AccessCommand = new RelayCommand(AccessToken);
             ConsumerKey = "egjNlASi3o3r4nriynMAnlTjE";
             ConsumerSecret = "fhuBNzdwrs1Tt9NrkzCvYJbzQeCr5WvIGvHPOG95lod9SVJ7Qd";
@@ -60,16 +53,16 @@ namespace TweetScrapper.UI.ViewModel
         {
             try
             {
-                Token = Authorizer.Authorize(ConsumerKey, ConsumerSecret);
-                IsAccessed = true;
+                _tweetSearcher.Token = Authorizer.Authorize(ConsumerKey, ConsumerSecret);                
             }
             catch(Exception e)
             {
-                IsAccessed = false;
+                _tweetSearcher.Token = null;
             }
             finally
             {
                 RequestClose?.Invoke(this, EventArgs.Empty);
+                RequestClose = null;
             }
         }
     }

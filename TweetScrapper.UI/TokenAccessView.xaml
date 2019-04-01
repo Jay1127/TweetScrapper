@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TweetScrapper.UI"
         mc:Ignorable="d"
-        Title="TokenAccessView" ResizeMode="NoResize" Height="211.37" Width="558.6" DataContext="{Binding TokenAccess, Source={StaticResource Locator}}">
+        Title="TokenAccessView" ResizeMode="NoResize" Height="211.37" Width="558.6">
     <Grid>
         <Grid.Resources>
             <Style TargetType="Label">

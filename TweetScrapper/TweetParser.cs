@@ -32,6 +32,15 @@ namespace TweetScrapper
             return tweets;
         }
 
+        public static IEnumerable<Tweet> Parse(string jsonString)
+        {
+            var token = JToken.Parse(jsonString);
+
+            JArray jArray = (token is JArray) ? token as JArray :
+                                                token["statuses"] as JArray;
+
+            return Parse(jArray);
+        }
 
         /// <summary>
         /// Tweet에서 받은 DateTime문자열을 .Net의 DateTime으로 파싱함.

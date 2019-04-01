@@ -11,6 +11,14 @@ namespace TweetScrapper
     /// </summary>
     public interface IQueryable
     {
+        string BaseUrl { get; }
+
+        ulong MaxId { get; set; }
+
+        int CountPerQuery { get; }
+
+        int MaxCount { get; }
+
         /// <summary>
         /// 쿼리 URL을 생성합니다.
         /// </summary>
