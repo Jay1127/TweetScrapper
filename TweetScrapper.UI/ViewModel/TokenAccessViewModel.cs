@@ -15,6 +15,9 @@ namespace TweetScrapper.UI.ViewModel
     {
         private readonly TweetSearcher _tweetSearcher;
 
+        public delegate void TokenRequestHandler();
+        public event TokenRequestHandler TokenAccessRequested;
+
         /// <summary>
         /// consumer key(binding textbox)
         /// </summary>
@@ -53,14 +56,15 @@ namespace TweetScrapper.UI.ViewModel
         {
             try
             {
-                _tweetSearcher.Token = Authorizer.Authorize(ConsumerKey, ConsumerSecret);                
+                _tweetSearcher.Token = Authorizer.Authorize(ConsumerKey, ConsumerSecret);
             }
             catch(Exception e)
             {
-                _tweetSearcher.Token = null;
+                
             }
             finally
             {
+                TokenAccessRequested?.Invoke();
                 RequestClose?.Invoke(this, EventArgs.Empty);
                 RequestClose = null;
             }

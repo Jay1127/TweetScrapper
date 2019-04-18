@@ -27,6 +27,22 @@ namespace TweetScrapper
         public bool IsExtrudeReplies { get; set; }
 
         public bool IsIncludeRT { get; set; }
+
+        public UserTimelineQuery()
+        {
+
+        }
+
+        public UserTimelineQuery(string screenName)
+        {
+            ScreenName = screenName;
+        }
+
+        public UserTimelineQuery(UserTimelineQuery query)
+            : this(query.ScreenName)
+        {
+
+        }
        
         public string BuildQueryUrl()
         {

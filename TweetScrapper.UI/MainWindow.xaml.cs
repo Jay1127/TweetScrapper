@@ -13,11 +13,6 @@ namespace TweetScrapper.UI
         public MainWindow()
         {
             InitializeComponent();
-
-            (this.DataContext as IRequestCloseViewModel).RequestClose += (sender, e) =>
-            {
-                this.Close();
-            };
         }
 
         private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)

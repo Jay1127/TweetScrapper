@@ -7,13 +7,11 @@ using System.Threading.Tasks;
 
 namespace TweetScrapper.UI.ViewModel
 {
-    public class AdvancedTimelineSearchViewModel : ViewModelBase
+    public class AdvancedTimelineSearchViewModel : AdvancedSearchViewModel
     {
-        public UserTimelineQuery Query { get; }
-
-        public AdvancedTimelineSearchViewModel(IQueryable query)
+        public AdvancedTimelineSearchViewModel(TweetSearcher tweetSearcher)
+            : base(tweetSearcher, new UserTimelineQuery(tweetSearcher.Query as UserTimelineQuery))
         {
-            Query = query as UserTimelineQuery;
         }
     }
 }

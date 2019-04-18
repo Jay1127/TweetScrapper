@@ -14,21 +14,47 @@ namespace TweetScrapper.UI.ViewModel
     /// </summary>
     public class TweetSearchViewModel : ViewModelBase
     {
-        public TweetSearcher TweetSearcher { get; }
-
+        private AdvancedSearchViewModel _advancedOptionViewModel;
+        private readonly TweetSearcher _tweetSearcher;
         private string _searchKeyword;
-        private int _count;
+        private SearchType _searchType;
+
+        public AdvancedSearchViewModel AdvancedOptionViewModel
+        {
+            get => _advancedOptionViewModel;
+            set => Set(ref _advancedOptionViewModel, value);
+        }
 
         public int Count
         {
-            get => _count;
-            set => Set(ref _count, value);
+            get => Tweets.Count;
         }
+
+        public bool CanSearch
+        {
+            get => _tweetSearcher.CanSearch;
+        }        
 
         /// <summary>
         /// Selected seach type(binding combobox)
         /// </summary>
-        public SearchType SearchType { get; set; }
+        public SearchType SearchType
+        {
+            get => _searchType;
+            set
+            {
+                _searchType = value;
+               
+                if (SearchType == SearchType.Keyword)
+                {
+                    _tweetSearcher.Query = new TweetSearchQuery(SearchKeyword);
+                }
+                else
+                {
+                    _tweetSearcher.Query = new UserTimelineQuery() { ScreenName = SearchKeyword };
+                }
+            }
+        }
 
         /// <summary>
         /// search keyword(if type is user timeline, input screenname)
@@ -59,19 +85,26 @@ namespace TweetScrapper.UI.ViewModel
         /// </summary>
         public TweetSearchViewModel(TweetSearcher tweetSearcher)
         {
-            TweetSearcher = tweetSearcher;
-            Tweets = new ObservableCollection<Tweet>(TweetSearcher.SearchResult);
-            InitSearchKeyword();
+            _tweetSearcher = tweetSearcher;
+            Tweets = new ObservableCollection<Tweet>();
             SearchCommand = new RelayCommand(Search);
             ShowAdvancedOptionCommand = new RelayCommand(ShowAdvancedOption);
+            UpdateStatus();
         }
 
-        /// <summary>
-        /// Init default search keyword
-        /// </summary>
-        public void InitSearchKeyword()
+        public void UpdateStatus()
         {
-            SearchKeyword = "Need to authorize (Settings → Access)";
+            RaisePropertyChanged(nameof(SearchType));
+            RaisePropertyChanged(nameof(CanSearch));
+
+            if (CanSearch)
+            {
+                SearchKeyword = string.Empty;
+            }
+            else
+            {
+                SearchKeyword = "Need to authorize (Settings → Access)";
+            }
         }
 
         /// <summary>
@@ -79,37 +112,51 @@ namespace TweetScrapper.UI.ViewModel
         /// </summary>
         private void Search()
         {
+            UpdateKeywordToQuery();
+
             Tweets.Clear();
 
-            IQueryable queryable = null;
-            if (SearchType == SearchType.Keyword)
+            foreach (var tweet in _tweetSearcher.Search())
             {
-                queryable = new TweetSearchQuery(SearchKeyword);
-            }
-            else
-            {
-                queryable = new UserTimelineQuery() { ScreenName = SearchKeyword };
+                Tweets.Add(tweet);
             }
 
-            TweetSearcher.Query = queryable;
-            TweetSearcher.Search();
-
-            foreach(var result in TweetSearcher.SearchResult)
-            {
-                Tweets.Add(result);
-            }
-            Count = Tweets.Count;
+            RaisePropertyChanged(nameof(Count));            
         }
 
         private void ShowAdvancedOption()
         {
+            if (AdvancedOptionViewModel != null)
+            {
+                AdvancedOptionViewModel = null;
+                return;
+            }
+
             if (SearchType == SearchType.Keyword)
             {
+                AdvancedOptionViewModel = new AdvancedKeywordSearchViewModel(_tweetSearcher);
             }
             else
             {
+                AdvancedOptionViewModel = new AdvancedTimelineSearchViewModel(_tweetSearcher);
             }
+
+            AdvancedOptionViewModel.WorkCompleted += (s, e) =>
+            {
+                AdvancedOptionViewModel = null;
+            };
         }
 
+        private void UpdateKeywordToQuery()
+        {
+            if (SearchType == SearchType.Keyword)
+            {
+                (_tweetSearcher.Query as TweetSearchQuery).Keyword = SearchKeyword;
+            }
+            else
+            {
+                (_tweetSearcher.Query as UserTimelineQuery).ScreenName = SearchKeyword;
+            }
+        }
     }
 }

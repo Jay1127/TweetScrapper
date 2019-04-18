@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TweetScrapper.UI"
-             mc:Ignorable="d" Height="200" Width="220" Background="White" BorderBrush="Black" BorderThickness="1">
+             xmlns:tw="clr-namespace:TweetScrapper;assembly=TweetScrapper"
+             mc:Ignorable="d" Height="290" Width="220" Background="White" BorderBrush="Black" BorderThickness="1">
     <Grid>
         <Grid.Resources>
             <Style TargetType="Label">
@@ -18,6 +19,11 @@
                 <Setter Property="Margin" Value="5"/>
             </Style>
             <Style TargetType="ComboBox">
+                <Setter Property="Height" Value="30"/>
+                <Setter Property="Margin" Value="5"/>
+            </Style>
+            <Style TargetType="Button">
+                <Setter Property="Width" Value="100"/>
                 <Setter Property="Height" Value="30"/>
                 <Setter Property="Margin" Value="5"/>
             </Style>
@@ -35,11 +41,13 @@
         </StackPanel>
         <StackPanel Grid.Column="1">
             <TextBox Text="{Binding Query.CountPerQuery, Mode=OneWay}"/>
-            <TextBox Text="{Binding Query.MaxCount, Mode=OneWay}"/>
-            <ComboBox/>
-            <ComboBox/>
-            <TextBox>
-            </TextBox>
+            <TextBox Text="{Binding Query.MaxCount}"/>
+            <ComboBox ItemsSource="{Binding Source={local:EnumBindingSource {x:Type tw:TweetSearchOption}}}"
+                      SelectedItem="{Binding Query.SearchOption}"/>
+            <TextBox Text="{Binding Query.Language}"/>
+            <DatePicker DisplayDate="{Binding Query.UntilDate}" Margin="5"/>
+            <Button Command="{Binding ApplyCommand}" Content="Apply"/>
+            <Button Command="{Binding CancelCommand}" Content="Cancel"/>
         </StackPanel>
     </Grid>
 </UserControl>

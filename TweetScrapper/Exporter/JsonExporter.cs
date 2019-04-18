@@ -18,7 +18,7 @@ namespace TweetScrapper
         /// </summary>
         /// <param name="path">파일 내보내기 경로</param>
         /// <param name="scrapItems">내보낼 scrap item</param>
-        public void Export(string path, List<IScrapItem> scrapItems)
+        public void Export(string path, IList<IScrapItem> scrapItems)
         {
             if (!Directory.Exists(Path.GetPathRoot(path)))
             {

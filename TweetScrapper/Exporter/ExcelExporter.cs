@@ -21,6 +21,12 @@ namespace TweetScrapper
         /// </summary>
         public IEnumerable<string> Header { get; set; }
 
+        public ExcelExporter()
+            : this(new string[] { "Id", "Text", "Url", "Favorite Count", "Retweet Count" })
+        {
+
+        }
+
         /// <summary>
         /// 엑셀 생성자
         /// </summary>
@@ -35,7 +41,7 @@ namespace TweetScrapper
         /// </summary>
         /// <param name="path">파일 내보내기 경로</param>
         /// <param name="scrapItems">내보낼 scrap item</param>
-        public void Export(string path, List<IScrapItem> scrapItems)
+        public void Export(string path, IList<IScrapItem> scrapItems)
         {
             if (!Directory.Exists(Path.GetPathRoot(path)))
             {

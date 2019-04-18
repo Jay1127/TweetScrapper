@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,13 +8,11 @@ using System.Threading.Tasks;
 
 namespace TweetScrapper.UI.ViewModel
 {
-    public class AdvancedKeywordSearchViewModel : ViewModelBase
+    public class AdvancedKeywordSearchViewModel : AdvancedSearchViewModel
     {
-        public TweetSearchQuery Query { get; }
-
-        public AdvancedKeywordSearchViewModel(IQueryable query)
+        public AdvancedKeywordSearchViewModel(TweetSearcher tweetSearcher)
+            : base(tweetSearcher, new TweetSearchQuery(tweetSearcher.Query as TweetSearchQuery))
         {
-            Query = query as TweetSearchQuery;
         }
     }
 }

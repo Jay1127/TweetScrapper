@@ -53,9 +53,15 @@ namespace TweetScrapper
         public TweetSearchOption SearchOption { get; set; }
 
         /// <summary>
-        /// 페이지당 가져올 Tweet의 수로 기본 15, 최대 100
+        /// 페이지당 가져올 Tweet의 수(최대 100)
         /// </summary>
-        public int CountPerQuery { get; private set; }
+        public int CountPerQuery
+        {
+            get
+            {
+                return MaxCount < 100 ? MaxCount : 100;
+            }
+        }
 
         /// <summary>
         /// 최대로 가져올 트위터의 수
@@ -94,9 +100,16 @@ namespace TweetScrapper
             Language = language;
             SearchOption = scrapOption;
             MaxCount = maxTweetCount;
-            CountPerQuery = MaxCount < 100 ? MaxCount : 100;
             MaxId = ulong.MaxValue;
+            UntilDate = DateTime.Now;
         }
+
+        public TweetSearchQuery(TweetSearchQuery query)
+            : this(query.Keyword, query.Language, query.SearchOption, query.MaxCount)
+        {
+
+        }
+
 
         /// <summary>
         /// 쿼리 URL를 생성

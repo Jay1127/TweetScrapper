@@ -1,41 +1,75 @@
 using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.IO;
+using System.Linq;
 using System.Windows;
+using System.Windows.Forms;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 
 namespace TweetScrapper.UI.ViewModel
 {
-    public class MainViewModel : ViewModelBase, IRequestCloseViewModel
+    public class MainViewModel : ViewModelBase
     {
-        private ViewModelBase _advancedOptionViewModel;
         private readonly TweetSearcher _tweetSearcher;
+
+        public IList<IScrapItem> Tweets { get; set; }
 
         public TokenAccessViewModel TokenAccessViewModel { get; }
         public TweetSearchViewModel TweetSearchViewModel { get; }
 
-        public ViewModelBase AdvancedOptionViewModel
-        {
-            get => _advancedOptionViewModel;
-            set => Set(ref _advancedOptionViewModel, value);
-        }
-
         public RelayCommand ShowAccessDialogCommand { get; }
-
-        public event EventHandler RequestClose;
 
         public RelayCommand SaveCommand { get; }
         public RelayCommand ExitCommand { get; }        
 
         public MainViewModel()
         {
+            Tweets = new List<IScrapItem>();
             _tweetSearcher = new TweetSearcher();
+
+            SaveCommand = new RelayCommand(Save);
             ExitCommand = new RelayCommand(Exit);
             ShowAccessDialogCommand = new RelayCommand(ShowAccessDialog);
-            TokenAccessViewModel = new TokenAccessViewModel(_tweetSearcher);
-            TweetSearchViewModel = new TweetSearchViewModel(_tweetSearcher)
+            TokenAccessViewModel = new TokenAccessViewModel(_tweetSearcher);            
+            TweetSearchViewModel = new TweetSearchViewModel(_tweetSearcher);
+
+            TweetSearchViewModel.Tweets.CollectionChanged += Tweets_CollectionChanged;
+
+            TokenAccessViewModel.TokenAccessRequested += () =>
             {
-                ShowAdvancedOptionCommand = new RelayCommand(ShowAdvancedOption)
+                TweetSearchViewModel.UpdateStatus();
             };
+        }
+
+        private void Tweets_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if(e.Action == NotifyCollectionChangedAction.Add)
+            {
+                foreach(var tweet in e.NewItems.Cast<Tweet>())
+                {
+                    Tweets.Add(tweet);
+                }
+            }
+            else if(e.Action == NotifyCollectionChangedAction.Reset)
+            {
+                Tweets.Clear();
+            }
+        }
+
+        private void Save()
+        {
+            using (var dialog = new SaveFileDialog())
+            {
+                dialog.Filter = "xlsx file (*.xlsx)|*.xlsx|json (*.json)|*.json|txt file (*.txt)|*.txt";
+
+                if(dialog.ShowDialog() == DialogResult.OK)
+                {
+                    var exporter = CreateExporter(Path.GetExtension(dialog.FileName));
+                    exporter.Export(dialog.FileName, Tweets);
+                }
+            }
         }
 
         public void ShowAccessDialog()
@@ -51,43 +85,33 @@ namespace TweetScrapper.UI.ViewModel
             };
 
             view.ShowDialog();
-            
-            if (_tweetSearcher.CanSearch)
-            {
-                TweetSearchViewModel.SearchKeyword = string.Empty;
-            }
-            else
-            {
-                TweetSearchViewModel.InitSearchKeyword();
-            }
-        }
 
-        private void ShowAdvancedOption()
-        {
-            if(AdvancedOptionViewModel != null)
-            {
-                AdvancedOptionViewModel = null;
-                return;
-            }
-
-            if(TweetSearchViewModel.SearchType == SearchType.Keyword)
-            {
-                AdvancedOptionViewModel = new AdvancedKeywordSearchViewModel(_tweetSearcher.Query);
-            }
-            else
-            {
-                AdvancedOptionViewModel = new AdvancedTimelineSearchViewModel(_tweetSearcher.Query);
-            }
+            TweetSearchViewModel.UpdateStatus();
         }
 
         public void Exit()
         {
-            RequestClose?.Invoke(this, EventArgs.Empty);
+            System.Windows.Application.Current.Shutdown();
         }
 
-        private void CloseView(Window window)
+        private IExportable CreateExporter(string extension)
         {
-            window.Close();
+            IExportable exporter = null;
+
+            if (extension == ".xlsx")
+            {
+                exporter = new ExcelExporter();
+            }
+            else if (extension == ".json")
+            {
+                exporter = new JsonExporter();
+            }
+            else if (extension == ".txt")
+            {
+                exporter = new TextExporter();
+            }
+
+            return exporter;
         }
     }
 }

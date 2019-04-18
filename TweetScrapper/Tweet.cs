@@ -67,8 +67,11 @@ namespace TweetScrapper
         {
             return new string[] 
             {
-                CreationTime.ToShortDateString(),
-                Text
+                Id.ToString(),
+                Text,
+                Url,
+                FavoriteCount.ToString(),
+                RetweetCount.ToString()
             };
         }
 
